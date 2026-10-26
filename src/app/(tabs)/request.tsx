@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import { useMemo, useRef, useState } from 'react';
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, type ScrollViewInstance, StyleSheet, type TextInputInstance, View } from 'react-native';
 import Animated, { FadeInRight, FadeOutLeft } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTabScreenInsets } from '@/lib/insets';
 
 import { Button } from '@/components/Button';
 import { FormField } from '@/components/FormField';
@@ -22,7 +22,7 @@ export default function RequestScreen() {
   const content = useContent();
   const collections = useCollections();
   const { draft, update } = useRequest();
-  const insets = useSafeAreaInsets();
+  const insets = useTabScreenInsets();
   const reduce = useReducedMotion();
   const [stepIndex, setStepIndex] = useState(0);
   const [errors, setErrors] = useState<FieldErrors>({});
@@ -153,7 +153,7 @@ export default function RequestScreen() {
         </Animated.View>
       </ScrollView>
 
-      <View style={[styles.dock, { paddingBottom: Math.max(insets.bottom, space.md) + 56 }]}>
+      <View style={[styles.dock, { paddingBottom: Math.max(insets.bottom, space.md) }]}>
         {stepIndex > 0 ? (
           <Button label="Back" kind="secondary" arrow={false} onPress={() => goTo(stepIndex - 1)} style={{ flex: 0.6 }} />
         ) : null}

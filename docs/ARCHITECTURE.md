@@ -55,7 +55,7 @@ copy. Only `sent` produces the success state. `mailto` produces "Finish in your 
 
 ## Navigation
 NativeTabs (native iOS tab bar) with SF Symbols. Service detail and outcome are root-stack
-routes so they overlay tabs. Deep links: `iaeelite://service/<id>`, `iaeelite://request?service=<id>`.
+routes so they overlay tabs. Deep links: `iaeelite://service/<id>`, `iaeelite://services?c=<collection>`.
 
 ## Update strategy
 See `docs/APP_UPDATE_STRATEGY.md`.

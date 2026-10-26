@@ -2,7 +2,7 @@ import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTabScreenInsets } from '@/lib/insets';
 
 import { Button } from '@/components/Button';
 import { Rule } from '@/components/Rule';
@@ -15,7 +15,7 @@ import { color, gutter, space } from '@/theme/tokens';
 export default function Connect() {
   const content = useContent();
   const { contact } = content;
-  const insets = useSafeAreaInsets();
+  const insets = useTabScreenInsets();
   const [mailNote, setMailNote] = useState<string | null>(null);
 
   const email = async () => {
@@ -39,7 +39,7 @@ export default function Connect() {
       <View style={styles.pad}>
         <Image source={crest} style={styles.crest} contentFit="contain" accessibilityElementsHidden />
         <Text variant="overline" tone="gold" style={{ marginTop: space.xl }}>Direct line</Text>
-        <Text variant="display" style={{ marginTop: space.sm }}>One line.{'\n'}<Text variant="display" italic tone="gold">Handled quietly.</Text></Text>
+        <Text variant="display" style={{ marginTop: space.sm }}>One line.{'\n'}<Text variant="display" italic inline tone="gold">Handled quietly.</Text></Text>
         <Rule width={72} style={{ marginVertical: space.xl }} />
         <Text tone="muted">{contact.responseNote}</Text>
       </View>

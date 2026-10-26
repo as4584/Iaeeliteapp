@@ -39,3 +39,15 @@ Docs: https://docs.expo.dev/eas/index.md
 - If `ios/` and `android/` directories do not exist, they are generated (Continuous Native Generation). Never create or edit them by hand — configure native behavior in `app.json` and config plugins.
 - Expo Go only includes its bundled native modules. After adding a library with native code, the app needs a development build: `npx expo run:ios|android` locally, or `eas build --profile development`.
 - Prefer recommended Expo modules over third-party libraries, and check your available skills before adding dependencies. Docs: https://docs.expo.dev/versions/latest/index.md
+
+## IAE Elite project rules
+
+- Read `docs/PRODUCT_SPEC.md` and `docs/CLIENT_AUDIT.md` before changing copy or scope. Business facts must be in CLIENT_AUDIT §1 (Verified). Never invent prices, testimonials, press, staff, stats, or bookings.
+- Business content lives in `content/content.json` (validated by `src/content/schema.ts`). Don't hard-code business data in components.
+- Screens never call `fetch`, `Linking`, or `MailComposer` directly: use `src/content/repository.ts` and `src/lib/contact.ts`.
+- Request success copy is shown **only** for Mail status `sent` (`toOutcome`). Keep it that way.
+- Keep the "IAE is not a security firm" scope notes on protective services.
+- Design is frozen per `docs/DESIGN.md`; change it only for a written defect.
+- Done = `npm run check` green + screenshots re-captured for touched screens + `docs/QA.md` updated.
+- Branches only; `master` holds tagged baselines. Never submit to the App Store or run `eas build/submit/update` without Alex's explicit approval.
+- Jest: use `test/reanimated-stub.js` (Reanimated 4.7's mock throws under jest-expo); `await` RNTL `render`/`fireEvent`.

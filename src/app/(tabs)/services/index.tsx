@@ -1,6 +1,6 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { FlatList, Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTabScreenInsets } from '@/lib/insets';
 
 import { SectionHeader } from '@/components/SectionHeader';
 import { ServiceRow } from '@/components/ServiceRow';
@@ -9,7 +9,7 @@ import { useCollections, useServicesIn } from '@/content/ContentProvider';
 import { color, gutter, space } from '@/theme/tokens';
 
 export default function Services() {
-  const insets = useSafeAreaInsets();
+  const insets = useTabScreenInsets();
   const collections = useCollections();
   const { c } = useLocalSearchParams<{ c?: string }>();
   // The ?c= param is the single source of truth (Home tiles and deep links set it too).

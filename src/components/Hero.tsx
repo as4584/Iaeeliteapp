@@ -1,9 +1,11 @@
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useFocusEffect } from 'expo-router';
 import { useVideoPlayer, VideoView } from 'expo-video';
+import { useCallback } from 'react';
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTabScreenInsets } from '@/lib/insets';
 
 import { crest, resolveImage, resolveVideo } from '@/content/media';
 import type { Content } from '@/content/schema';
@@ -17,7 +19,7 @@ import { Text } from './Text';
 /** Signature moment 1: muted film loop behind the crest and the line. */
 export function Hero({ hero, motto, onRequest }: { hero: Content['hero']; motto: string; onRequest: () => void }) {
   const { height } = useWindowDimensions();
-  const insets = useSafeAreaInsets();
+  const insets = useTabScreenInsets();
   const reduce = useReducedMotion();
   const reel = hero.film[0];
   const source = reel && !reduce ? resolveVideo(reel.video) : null;
@@ -25,8 +27,16 @@ export function Hero({ hero, motto, onRequest }: { hero: Content['hero']; motto:
   const player = useVideoPlayer(source, (p) => {
     p.loop = true;
     p.muted = true;
-    p.play();
   });
+
+  // Play only while Home is the visible tab — no background looping.
+  useFocusEffect(
+    useCallback(() => {
+      if (!source) return;
+      player.play();
+      return () => player.pause();
+    }, [player, source]),
+  );
 
   const enter = (delay: number) => (reduce ? undefined : FadeInDown.duration(520).delay(delay));
 
@@ -52,7 +62,7 @@ export function Hero({ hero, motto, onRequest }: { hero: Content['hero']; motto:
       />
       <View style={[styles.content, { paddingTop: insets.top + space.lg }]}>
         <Animated.View entering={reduce ? undefined : FadeIn.duration(700)} style={styles.crestWrap}>
-          <Image source={crest} style={styles.crest} contentFit="contain" accessibilityLabel="IAE Elite crest" />
+          <Image source={crest} style={height < 740 ? styles.crestSmall : styles.crest} contentFit="contain" accessibilityLabel="IAE Elite crest" />
         </Animated.View>
         <View style={{ flex: 1 }} />
         <Animated.View entering={enter(150)}>
@@ -61,7 +71,7 @@ export function Hero({ hero, motto, onRequest }: { hero: Content['hero']; motto:
         <Animated.View entering={enter(260)}>
           <Text variant="display" style={{ marginTop: space.md }}>
             {hero.headline}{' '}
-            <Text variant="display" italic tone="gold">{hero.accentWord}</Text>
+            <Text variant="display" italic inline tone="gold">{hero.accentWord}</Text>
           </Text>
         </Animated.View>
         <Rule draw delay={700} width={88} style={{ marginVertical: space.lg }} />
@@ -82,4 +92,5 @@ const styles = StyleSheet.create({
   content: { flex: 1, paddingHorizontal: gutter, paddingBottom: space.xxl },
   crestWrap: { alignItems: 'center' },
   crest: { width: 92, height: 92 },
+  crestSmall: { width: 64, height: 64 },
 });

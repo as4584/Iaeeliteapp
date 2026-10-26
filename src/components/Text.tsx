@@ -8,6 +8,8 @@ type Props = TextProps & {
   variant?: TextVariant;
   tone?: 'default' | 'muted' | 'faint' | 'gold' | 'onGold' | 'danger';
   italic?: boolean;
+  /** Nested inside another Text (e.g. the gold accent word) — never its own heading. */
+  inline?: boolean;
 };
 
 const tones = {
@@ -19,12 +21,12 @@ const tones = {
   danger: color.danger,
 };
 
-export function Text({ variant = 'body', tone = 'default', italic, style, ...rest }: Props) {
+export function Text({ variant = 'body', tone = 'default', italic, inline, style, ...rest }: Props) {
   const isDisplay = variant === 'display' || variant === 'title' || variant === 'heading';
   return (
     <RNText
       maxFontSizeMultiplier={isDisplay ? 1.3 : 1.6}
-      accessibilityRole={isDisplay ? 'header' : undefined}
+      accessibilityRole={isDisplay && !inline ? 'header' : undefined}
       {...rest}
       style={[styles[variant], { color: tones[tone] }, italic && isDisplay && styles.italic, style]}
     />

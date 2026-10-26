@@ -7,7 +7,6 @@ const CACHE_KEY = 'iae.content.v1';
 const FETCH_TIMEOUT_MS = 8000;
 
 export type ContentSource = 'bundled' | 'cache' | 'remote';
-export type Loaded = { content: Content; source: ContentSource };
 
 /** Bundled snapshot. Validated by tests; a failure here is a build-time bug, so throw. */
 export function getBundledContent(): Content {
@@ -55,8 +54,3 @@ export async function fetchRemoteContent(
   }
 }
 
-/** Synchronous-first load: bundled immediately, cache if present. Remote is applied later. */
-export async function loadInitialContent(): Promise<Loaded> {
-  const cached = await readCachedContent();
-  return cached ? { content: cached, source: 'cache' } : { content: getBundledContent(), source: 'bundled' };
-}

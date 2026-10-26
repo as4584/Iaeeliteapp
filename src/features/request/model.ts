@@ -25,7 +25,7 @@ export const emptyDraft: RequestDraft = {
 export type StepId = 'what' | 'when' | 'who' | 'review';
 export const STEPS: { id: StepId; label: string }[] = [
   { id: 'what', label: 'What' },
-  { id: 'when', label: 'When & where' },
+  { id: 'when', label: 'When' },
   { id: 'who', label: 'Who' },
   { id: 'review', label: 'Review' },
 ];

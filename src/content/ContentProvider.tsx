@@ -23,7 +23,10 @@ export function ContentProvider({ children }: PropsWithChildren) {
     let alive = true;
     (async () => {
       const cached = await readCachedContent();
-      if (alive && cached) setState({ content: cached, source: 'cache' });
+      // A cache older than the bundled copy (e.g. after an app update) is stale.
+      if (alive && cached && cached.updatedAt >= getBundledContent().updatedAt) {
+        setState({ content: cached, source: 'cache' });
+      }
       const remote = await fetchRemoteContent();
       if (alive && remote.ok) setState({ content: remote.content, source: 'remote' });
     })();
