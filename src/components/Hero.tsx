@@ -1,8 +1,5 @@
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useFocusEffect } from 'expo-router';
-import { useVideoPlayer, VideoView } from 'expo-video';
-import { useCallback } from 'react';
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 import { useTabScreenInsets } from '@/lib/insets';
@@ -13,6 +10,7 @@ import { useReducedMotion } from '@/lib/feel';
 import { color, font, gutter, space } from '@/theme/tokens';
 
 import { Button } from './Button';
+import { FilmLayer } from './FilmLayer';
 import { Text } from './Text';
 
 /** Signature moment 1: muted film loop behind the crest and the line. */
@@ -25,19 +23,6 @@ export function Hero({ hero, motto, onRequest }: { hero: Content['hero']; motto:
   const reel = hero.film[0];
   const source = reel && !reduce ? resolveVideo(reel.video) : null;
 
-  const player = useVideoPlayer(source, (p) => {
-    p.loop = true;
-    p.muted = true;
-  });
-
-  // Play only while Home is the visible tab — no background looping.
-  useFocusEffect(
-    useCallback(() => {
-      if (!source) return;
-      player.play();
-      return () => player.pause();
-    }, [player, source]),
-  );
 
   const enter = (delay: number) => (reduce ? undefined : FadeInDown.duration(520).delay(delay));
 
@@ -46,23 +31,14 @@ export function Hero({ hero, motto, onRequest }: { hero: Content['hero']; motto:
       {reel ? (
         <Image source={resolveImage(reel.poster)} style={StyleSheet.absoluteFill} contentFit="cover" accessibilityIgnoresInvertColors />
       ) : null}
-      {source ? (
-        <VideoView
-          player={player}
-          style={StyleSheet.absoluteFill}
-          contentFit="cover"
-          nativeControls={false}
-          allowsPictureInPicture={false}
-          accessible={false}
-        />
-      ) : null}
+      {source ? <FilmLayer source={source} /> : null}
       <LinearGradient
         colors={['rgba(10,10,11,0.45)', 'rgba(10,10,11,0)', 'rgba(10,10,11,0.8)', color.bg]}
         locations={[0, 0.22, 0.62, 1]}
         style={StyleSheet.absoluteFill}
       />
       <View style={[styles.content, { paddingTop: insets.top + space.xs }]}>
-        <Animated.View entering={reduce ? undefined : FadeIn.duration(700)} style={styles.crestWrap}>
+        <Animated.View entering={reduce ? undefined : FadeIn.duration(700)} style={[styles.crestWrap, { top: insets.top + CREST_EDGE }]}>
           <Image source={crest} style={height < 740 ? styles.crestSmall : styles.crest} contentFit="contain" accessibilityLabel="IAE Elite crest" />
         </Animated.View>
         <View style={{ flex: 1 }} />
@@ -89,11 +65,14 @@ export function Hero({ hero, motto, onRequest }: { hero: Content['hero']; motto:
   );
 }
 
+const CREST_EDGE = 4;
+
 const styles = StyleSheet.create({
   root: { backgroundColor: color.bg, overflow: 'hidden' },
   content: { flex: 1, paddingHorizontal: gutter, paddingBottom: space.xxl },
   // Top-left, high in the frame; sized so the crest's lettering stays legible without covering the film.
-  crestWrap: { alignItems: 'flex-start' },
+  // Pinned to the corner: only the safe-area top (status bar on iPhone, 0 on web) plus a hairline edge.
+  crestWrap: { position: 'absolute', left: CREST_EDGE, zIndex: 1 },
   crest: { width: 112, height: 112 },
   crestSmall: { width: 80, height: 80 },
   // Two weight steps heavier (Manrope 400 -> 600) and full white for contrast over the film.

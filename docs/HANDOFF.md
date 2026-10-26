@@ -37,6 +37,8 @@ icon/name changes. See `docs/APP_UPDATE_STRATEGY.md`.
 - Imagery and reels are taken from the IAE website. Usage rights still need written confirmation.
 - The website's press wall (Forbes, GQ, Variety…) is **deliberately left out** until coverage links are provided.
 - The website's Facebook link is broken (no URL), so Facebook is left out.
+- **Film likeness:** a frame of the "Arrival" reel shows a figure closely resembling a well-known public figure. If the reels are AI-generated with a real person's likeness, the client must confirm rights before App Store use (right of publicity, Apple guideline 5.2).
+- Film reels were AI-upscaled (Real-ESRGAN) from the website's 368×654 / 960×720 sources to 1080p. This is sharper but not true HD; original camera or render files from the client would be better still. The still photos have not been upscaled yet.
 
 ## Phase 2 roadmap (priority order)
 1. Server-backed inquiry (Supabase table + email notification): request IDs, guaranteed delivery, no Mail dependency.
