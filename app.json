@@ -1,38 +1,49 @@
 {
   "expo": {
-    "name": "Iaeeliteapp",
-    "slug": "Iaeeliteapp",
+    "name": "IAE Elite",
+    "slug": "iae-elite",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "iaeeliteapp",
-    "userInterfaceStyle": "automatic",
+    "scheme": "iaeelite",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#0A0A0B",
+    "runtimeVersion": { "policy": "appVersion" },
     "ios": {
-      "icon": "./assets/expo.icon"
+      "bundleIdentifier": "com.innovationartistescort.iaeelite",
+      "supportsTablet": false,
+      "config": { "usesNonExemptEncryption": false },
+      "infoPlist": {
+        "LSApplicationQueriesSchemes": ["mailto", "tel"]
+      }
     },
     "android": {
+      "package": "com.innovationartistescort.iaeelite",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#0A0A0B",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "backgroundImage": "./assets/images/android-icon-background.png"
       },
       "predictiveBackGestureEnabled": false
     },
     "web": {
-      "output": "server",
-      "favicon": "./assets/images/favicon.png"
+      "output": "single",
+      "favicon": "./assets/images/favicon.png",
+      "backgroundColor": "#0A0A0B"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
+          "backgroundColor": "#0A0A0B",
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "imageWidth": 180
         }
-      ]
+      ],
+      "expo-mail-composer",
+      "expo-video",
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true,
