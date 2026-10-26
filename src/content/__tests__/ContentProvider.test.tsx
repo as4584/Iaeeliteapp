@@ -11,7 +11,7 @@ function Probe() {
 }
 
 const URL = 'https://content.example.com/c.json';
-const origFetch = global.fetch;
+const origFetch = globalThis.fetch;
 const origUrl = process.env.EXPO_PUBLIC_CONTENT_URL;
 
 beforeEach(async () => {
@@ -19,12 +19,12 @@ beforeEach(async () => {
   process.env.EXPO_PUBLIC_CONTENT_URL = URL;
 });
 afterAll(() => {
-  global.fetch = origFetch;
+  globalThis.fetch = origFetch;
   process.env.EXPO_PUBLIC_CONTENT_URL = origUrl;
 });
 
 const mockFetch = (impl: () => Promise<unknown>) => {
-  global.fetch = jest.fn(impl) as unknown as typeof fetch;
+  globalThis.fetch = jest.fn(impl) as unknown as typeof fetch;
 };
 const ok = (body: unknown) => async () => ({ ok: true, status: 200, json: async () => body });
 
@@ -39,7 +39,7 @@ it('stays on bundled content when offline', async () => {
     throw new Error('Network request failed');
   });
   await render(<ContentProvider><Probe /></ContentProvider>);
-  await waitFor(() => expect(global.fetch).toHaveBeenCalled());
+  await waitFor(() => expect(globalThis.fetch).toHaveBeenCalled());
   expect(screen.getByTestId('probe').props.children).toBe(`bundled|${bundled.hero.primaryCta}`);
 });
 
@@ -58,13 +58,13 @@ it('ignores a cache older than the bundled copy (app was updated)', async () => 
     throw new Error('offline');
   });
   await render(<ContentProvider><Probe /></ContentProvider>);
-  await waitFor(() => expect(global.fetch).toHaveBeenCalled());
+  await waitFor(() => expect(globalThis.fetch).toHaveBeenCalled());
   expect(screen.getByTestId('probe').props.children).toBe(`bundled|${bundled.hero.primaryCta}`);
 });
 
 it('ignores remote content that fails validation', async () => {
   mockFetch(ok({ ...bundled, services: [] }));
   await render(<ContentProvider><Probe /></ContentProvider>);
-  await waitFor(() => expect(global.fetch).toHaveBeenCalled());
+  await waitFor(() => expect(globalThis.fetch).toHaveBeenCalled());
   expect(screen.getByTestId('probe').props.children).toBe(`bundled|${bundled.hero.primaryCta}`);
 });
