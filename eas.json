@@ -7,17 +7,17 @@
     "development": {
       "distribution": "internal",
       "channel": "development",
-      "ios": { "simulator": false }
+      "ios": {
+        "simulator": false
+      }
     },
     "preview": {
       "distribution": "internal",
-      "channel": "preview",
-      "env": { "EXPO_PUBLIC_CONTENT_URL": "" }
+      "channel": "preview"
     },
     "production": {
       "channel": "production",
-      "autoIncrement": true,
-      "env": { "EXPO_PUBLIC_CONTENT_URL": "" }
+      "autoIncrement": true
     }
   },
   "submit": {

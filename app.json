@@ -20,6 +20,8 @@
       "infoPlist": {
         "LSApplicationQueriesSchemes": [
           "mailto",
+          "tel",
+          "mailto",
           "tel"
         ],
         "UIStatusBarStyle": "UIStatusBarStyleLightContent"
@@ -34,6 +36,8 @@
       },
       "predictiveBackGestureEnabled": false,
       "blockedPermissions": [
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.WRITE_EXTERNAL_STORAGE"
       ]
@@ -60,6 +64,20 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {
+        "asyncRoutes": {
+          "web": true
+        }
+      },
+      "eas": {
+        "projectId": "b8c4c6b2-62c7-48a3-82c4-1fffe138334d"
+      }
+    },
+    "owner": "lexmakesit",
+    "updates": {
+      "url": "https://u.expo.dev/b8c4c6b2-62c7-48a3-82c4-1fffe138334d"
     }
   }
 }
