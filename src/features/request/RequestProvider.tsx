@@ -5,6 +5,8 @@ import { type RequestDraft, emptyDraft } from './model';
 // Draft lives in memory only — no PII is persisted to disk (see docs/ARCHITECTURE.md §Security).
 type Ctx = {
   draft: RequestDraft;
+  /** Bumps whenever the flow must restart at step 1 (after a reset or a new service pick). */
+  generation: number;
   update: (patch: Partial<RequestDraft>) => void;
   reset: () => void;
   /** Start a request from a service detail screen. */
@@ -15,14 +17,21 @@ const RequestContext = createContext<Ctx | null>(null);
 
 export function RequestProvider({ children }: PropsWithChildren) {
   const [draft, setDraft] = useState<RequestDraft>(emptyDraft);
+  const [generation, setGeneration] = useState(0);
   const update = useCallback((patch: Partial<RequestDraft>) => setDraft((d) => ({ ...d, ...patch })), []);
-  const reset = useCallback(() => setDraft(emptyDraft), []);
-  const startWith = useCallback(
-    (serviceId: string) =>
-      setDraft((d) => ({ ...d, serviceIds: d.serviceIds.includes(serviceId) ? d.serviceIds : [serviceId] })),
-    [],
+  const reset = useCallback(() => {
+    setDraft(emptyDraft);
+    setGeneration((g) => g + 1);
+  }, []);
+  // Picking a service from its detail page restarts at "What" with only that service, keeping contact details.
+  const startWith = useCallback((serviceId: string) => {
+    setDraft((d) => ({ ...d, serviceIds: [serviceId] }));
+    setGeneration((g) => g + 1);
+  }, []);
+  const value = useMemo(
+    () => ({ draft, generation, update, reset, startWith }),
+    [draft, generation, update, reset, startWith],
   );
-  const value = useMemo(() => ({ draft, update, reset, startWith }), [draft, update, reset, startWith]);
   return <RequestContext.Provider value={value}>{children}</RequestContext.Provider>;
 }
 

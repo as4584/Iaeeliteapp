@@ -4,7 +4,7 @@ Format per milestone: **Definition of done · Command · Expected result · If d
 
 ## Canonical validation
 - **Command:** `npm run check` (= `tsc --noEmit` → `expo lint` → `jest --ci`). CI runs the same.
-- **Expected:** `0` type errors, `0` lint problems, `Tests: 38 passed, 38 total` (4 suites).
+- **Expected:** `0` type errors, `0` lint problems, `Tests: 63 passed, 63 total` (8 suites).
 - **If different:** read the first failing layer only; rerun it alone (`npm run typecheck` /
   `npm run lint` / `npx jest <file>`), fix, then rerun `npm run check`.
   - Jest "setCSSEventHandler is not available in JSReanimated" → Reanimated's own mock was
@@ -17,6 +17,10 @@ Format per milestone: **Definition of done · Command · Expected result · If d
 | `content.test.ts` | Bundled content is schema-valid; real email/phone; all 22 site services present; every image ref resolves; ≤3 badges; "not a security firm" notes present; no prices; unsafe edits (http/javascript: links, bad badge kinds, orphan/duplicate ids, wrong schema major, bad email) are rejected |
 | `repository.test.ts` | Remote content: valid → used + cached; invalid/HTTP error/offline → rejected without throwing; no URL → no fetch; http URL refused; corrupt cache ignored |
 | `model.test.ts` | Step validation; Full-Engagement toggle rules; **exact email subject/body**; mailto encoding; only `sent` counts as success |
+| `RequestLifecycle.test.tsx` | Double-tap Send opens Mail once; "Opening Mail…" + disabled while composer is up; after reset the flow restarts at step 1; "Request this service" restarts at step 1 with only that service, keeping contact details |
+| `RequestResult.test.tsx` | Only `sent` shows success + success haptic + clears draft; saved/cancelled/handoff/failed show honest copy and call/copy fallbacks; a forged status param is treated as unconfirmed |
+| `contact.test.ts` | Mail status mapping; mailto fallback; failure (no app / composer crash) never throws; dialer URL; non-https links refused |
+| `ContentProvider.test.tsx` | Bundled first; valid remote swaps in; offline stays bundled; newer cache used; older cache ignored; invalid remote ignored |
 | `RequestFlow.test.tsx` | Rendered flow: blocked without a service; city required; full walk to Review; Mail called with exact recipient/subject/body; result route gets the composer's real status (sent / cancelled) |
 
 ## Visual QA (web build, iPhone viewports)
@@ -56,3 +60,21 @@ headers, request dock double-offset for tab bar, truncated step label on SE.
 - [ ] VoiceOver: hero reads as one heading; selection rows announce checked state; step progress announced
 - [ ] Largest Dynamic Type: no clipped buttons
 - [ ] iPhone SE (3rd gen) + 15 + Pro Max pass
+
+## Verification pass 2 (2026-10-25)
+| Gate | Command | Result |
+| --- | --- | --- |
+| Doctor | `npx expo-doctor` | PASS 20/20 |
+| Types / lint / tests | `npm run check` | PASS — 0 / 0 / 63 of 63 |
+| Test strength | mutation: make `saved` a success; remove double-tap guard | Both caught (2 and 1 failures), code restored |
+| iOS bundle | `npx expo export --platform ios` | PASS — Hermes bundle 4.5 MB, 8 fonts, 21 jpg / 9 webp / 3 mp4 |
+| Android bundle | `npx expo export --platform android` | PASS — Hermes bundle 4.7 MB |
+| Native config | `npx expo config --type introspect` | No usage strings needed, no background modes, no entitlements; Android permissions = INTERNET only |
+| Break attempts (web, SE) | `scratchpad/break.py` | 12/12 — rapid taps, whitespace/malformed input, 4 KB details text, edit-back, tab thrash, hostile deep link, 0 console errors |
+| Visual regression | `scripts/screens.py` (SE/15/Max) | 47 screens, 0 console errors |
+| Maestro | `.maestro/*.yaml` | **Written, not run** — no device/emulator on this Windows host |
+| Native runtime / TestFlight | — | **Not run** — needs EAS build (approval) and a physical iPhone |
+
+Fixed in pass 2: double-tap could open Mail twice; completed request left the Request tab on an
+empty Review; "Request this service" could land mid-flow; 29 unused font files bundled (11 → 7.5 MB
+assets); dark status bar text on black splash; unneeded Android storage permissions.

@@ -1,0 +1,9 @@
+appId: com.innovationartistescort.iaeelite
+name: Outcome screens via deep link (no fake success)
+---
+- launchApp
+- openLink: "iaeelite://request-result?status=cancelled"
+- assertVisible: "Not sent."
+- assertNotVisible: "Request on its way."
+- openLink: "iaeelite://request-result?status=forged"
+- assertVisible: "We can’t confirm it was sent."

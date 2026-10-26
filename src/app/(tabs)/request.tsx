@@ -19,6 +19,12 @@ const WHEN_CHIPS = ['Within 24 hours', 'This week', 'This month', 'Dates flexibl
 const CITY_CHIPS = ['New York', 'New Jersey'];
 
 export default function RequestScreen() {
+  // Remounting on a new generation returns the flow to step 1 with fresh local state.
+  const { generation } = useRequest();
+  return <RequestFlow key={generation} />;
+}
+
+function RequestFlow() {
   const content = useContent();
   const collections = useCollections();
   const { draft, update } = useRequest();
@@ -27,6 +33,8 @@ export default function RequestScreen() {
   const [stepIndex, setStepIndex] = useState(0);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [sending, setSending] = useState(false);
+  // State updates are async; a ref blocks a second tap landing before the re-render.
+  const sendingRef = useRef(false);
   const scroll = useRef<ScrollViewInstance>(null);
   const orgRef = useRef<TextInputInstance>(null);
   const phoneRef = useRef<TextInputInstance>(null);
@@ -64,11 +72,17 @@ export default function RequestScreen() {
       setErrors(e);
       return;
     }
+    if (sendingRef.current) return;
+    sendingRef.current = true;
     setSending(true);
-    const mail = buildRequestEmail(draft, content);
-    const status = await composeEmail(mail.to, mail.subject, mail.body);
-    setSending(false);
-    router.push({ pathname: '/request-result', params: { status } });
+    try {
+      const mail = buildRequestEmail(draft, content);
+      const status = await composeEmail(mail.to, mail.subject, mail.body);
+      router.push({ pathname: '/request-result', params: { status } });
+    } finally {
+      sendingRef.current = false;
+      setSending(false);
+    }
   };
 
   const toggle = (id: string) => {

@@ -1,6 +1,12 @@
-import { Archivo_700Bold, Archivo_800ExtraBold } from '@expo-google-fonts/archivo';
-import { BodoniModa_500Medium, BodoniModa_500Medium_Italic, BodoniModa_600SemiBold } from '@expo-google-fonts/bodoni-moda';
-import { Manrope_400Regular, Manrope_500Medium, Manrope_600SemiBold } from '@expo-google-fonts/manrope';
+// Per-weight subpath imports: the package index would bundle every weight (~20 MB of fonts).
+import { Archivo_700Bold } from '@expo-google-fonts/archivo/700Bold';
+import { Archivo_800ExtraBold } from '@expo-google-fonts/archivo/800ExtraBold';
+import { BodoniModa_500Medium } from '@expo-google-fonts/bodoni-moda/500Medium';
+import { BodoniModa_500Medium_Italic } from '@expo-google-fonts/bodoni-moda/500Medium_Italic';
+import { BodoniModa_600SemiBold } from '@expo-google-fonts/bodoni-moda/600SemiBold';
+import { Manrope_400Regular } from '@expo-google-fonts/manrope/400Regular';
+import { Manrope_500Medium } from '@expo-google-fonts/manrope/500Medium';
+import { Manrope_600SemiBold } from '@expo-google-fonts/manrope/600SemiBold';
 import { useFonts } from 'expo-font';
 import { DarkTheme, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';

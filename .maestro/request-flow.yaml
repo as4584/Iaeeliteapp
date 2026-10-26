@@ -1,0 +1,48 @@
+# Core conversion journey. Run against a dev/preview build: maestro test .maestro/
+# Stops at the Mail composer (system UI); outcome screens are covered by request-outcome.yaml.
+appId: com.innovationartistescort.iaeelite
+name: Request flow — home to Mail composer
+---
+- launchApp:
+    clearState: true
+- assertVisible: "REQUEST A CONSULTATION"
+- tapOn:
+    id: "hero-cta"
+- assertVisible: "What do you need handled?"
+# Can't continue without a service
+- tapOn:
+    id: "continue"
+- assertVisible: "Choose at least one thing to handle."
+- tapOn:
+    id: "select-artist-transport"
+- assertVisible: "CONTINUE · 1"
+- tapOn:
+    id: "continue"
+# City is required
+- tapOn:
+    id: "continue"
+- assertVisible: "Which city is this in?"
+- tapOn: "New York"
+- tapOn:
+    id: "continue"
+- tapOn: "Name"
+- inputText: "Maestro Test"
+- tapOn: "Email"
+- inputText: "qa@example.com"
+- hideKeyboard
+- tapOn:
+    id: "continue"
+- assertVisible: "Your brief."
+- assertVisible: "Artist Transport"
+- tapOn:
+    id: "send-request"
+# iOS Mail composer (requires a Mail account on the device) — cancel it and expect the honest state
+- runFlow:
+    when:
+      visible: "Cancel"
+    commands:
+      - tapOn: "Cancel"
+      - tapOn:
+          text: "Delete Draft"
+          optional: true
+      - assertVisible: "Not sent."

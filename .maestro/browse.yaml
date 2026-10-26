@@ -1,0 +1,18 @@
+appId: com.innovationartistescort.iaeelite
+name: Browse — services, detail, request this service, connect
+---
+- launchApp:
+    clearState: true
+- tapOn: "Services"
+- assertVisible: "Everything around the artist, run by one operation."
+- tapOn: "FOR CREATORS"
+- assertVisible: "Festival & Convention Escort"
+- tapOn: "CAPABILITIES"
+- tapOn: "Artist Transport. Door to door, on the second"
+- assertVisible: "Door to door, on the second"
+- tapOn:
+    id: "request-service"
+- assertVisible: "What do you need handled?"
+- tapOn: "Connect"
+- assertVisible: "CALL +1 (551) 301-4430"
+- assertVisible: "innovationbusiness@icloud.com"
