@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, View, type ViewStyle } from 'react-native';
+import { Pressable, StyleSheet, type ViewStyle } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { color, motion, radius, space } from '@/theme/tokens';
@@ -9,14 +9,13 @@ type Props = {
   label: string;
   onPress: () => void;
   kind?: 'primary' | 'secondary' | 'quiet';
-  arrow?: boolean;
   disabled?: boolean;
   accessibilityHint?: string;
   style?: ViewStyle;
   testID?: string;
 };
 
-export function Button({ label, onPress, kind = 'primary', arrow = kind === 'primary', disabled, accessibilityHint, style, testID }: Props) {
+export function Button({ label, onPress, kind = 'primary', disabled, accessibilityHint, style, testID }: Props) {
   const pressed = useSharedValue(0);
   const anim = useAnimatedStyle(() => ({
     transform: [{ scale: 1 - pressed.value * 0.02 }],
@@ -36,12 +35,9 @@ export function Button({ label, onPress, kind = 'primary', arrow = kind === 'pri
       onPressOut={() => (pressed.value = withTiming(0, { duration: motion.press }))}
       style={style}>
       <Animated.View style={[styles.base, styles[kind], disabled && styles.disabled, anim]}>
-        <Text variant="label" tone={kind === 'primary' ? 'onGold' : kind === 'quiet' ? 'gold' : 'default'}>
+        <Text variant="label" tone={kind === 'primary' ? 'onGold' : kind === 'quiet' ? 'gold' : 'default'} style={styles.label}>
           {label}
         </Text>
-        {arrow ? (
-          <View style={[styles.arrow, { backgroundColor: kind === 'primary' ? color.onGold : color.gold }]} />
-        ) : null}
       </Animated.View>
     </Pressable>
   );
@@ -55,12 +51,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: space.md,
   },
   primary: { backgroundColor: color.gold },
   secondary: { borderWidth: 1, borderColor: color.goldDeep, backgroundColor: 'transparent' },
-  quiet: { minHeight: 44, paddingHorizontal: 0, justifyContent: 'flex-start' },
+  quiet: { minHeight: 44, paddingHorizontal: 0 },
   disabled: { opacity: 0.4 },
-  // A drawn rule-arrow, consistent with the hairline motif.
-  arrow: { width: 18, height: 1.5 },
+  label: { textAlign: 'center' },
 });

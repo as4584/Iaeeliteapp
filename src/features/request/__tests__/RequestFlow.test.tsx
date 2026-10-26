@@ -55,7 +55,7 @@ it('walks What → When → Who → Review and sends the exact brief to the busi
   await waitFor(() => expect(composeEmail).toHaveBeenCalledTimes(1));
   const [to, subject, body] = (composeEmail as jest.Mock).mock.calls[0];
   expect(to).toBe('innovationbusiness@icloud.com');
-  expect(subject).toBe('Elite Service Request — Artist Transport · New York');
+  expect(subject).toBe('Elite Service Request: Artist Transport · New York');
   expect(body).toContain('Name: Jordan Reyes');
   expect(body).toContain('Email: jordan@example.com');
   expect(mockPush).toHaveBeenCalledWith({ pathname: '/request-result', params: { status: 'sent' } });

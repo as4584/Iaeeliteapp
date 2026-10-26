@@ -6,7 +6,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Badge } from '@/components/Badge';
 import { Button } from '@/components/Button';
-import { Rule } from '@/components/Rule';
 import { ServiceRow } from '@/components/ServiceRow';
 import { Text } from '@/components/Text';
 import { useContent, useService, useServicesIn } from '@/content/ContentProvider';
@@ -53,7 +52,6 @@ export default function ServiceDetail() {
           <Text variant="display" style={{ fontSize: 36, lineHeight: 42 }}>{service.title}</Text>
           <Text variant="heading" italic tone="gold">{service.tagline}</Text>
           {service.badge ? <Badge {...service.badge} glint /> : null}
-          <Rule width={56} style={{ marginVertical: space.sm }} />
           <Text>{service.body ?? service.summary}</Text>
           {service.note ? (
             <View style={styles.note} accessible accessibilityLabel={`Important: ${service.note}`}>

@@ -6,7 +6,6 @@ import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Badge } from '@/components/Badge';
 import { Button } from '@/components/Button';
 import { Hero } from '@/components/Hero';
-import { Rule } from '@/components/Rule';
 import { SectionHeader } from '@/components/SectionHeader';
 import { Text } from '@/components/Text';
 import { useCollections, useContent } from '@/content/ContentProvider';
@@ -48,7 +47,7 @@ export default function Home() {
           {featured.badge ? <Badge {...featured.badge} glint /> : null}
           <Text variant="title">{featured.title}</Text>
           <Text tone="muted">{featured.summary}</Text>
-          <Text variant="label" tone="gold" style={{ marginTop: space.sm }}>See what’s included  →</Text>
+          <Text variant="label" tone="gold" style={{ marginTop: space.sm }}>See what’s included</Text>
         </View>
       </Pressable>
 
@@ -123,7 +122,6 @@ export default function Home() {
         <Text variant="overline" tone="gold">{content.mission.overline}</Text>
         <Text variant="title">{content.mission.title}</Text>
         <Text tone="muted">{content.mission.body}</Text>
-        <Rule width={40} style={{ marginTop: space.sm }} />
         <Text variant="heading" italic tone="gold">“{content.mission.quote}”</Text>
       </View>
 

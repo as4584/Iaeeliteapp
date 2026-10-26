@@ -5,7 +5,6 @@ import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useTabScreenInsets } from '@/lib/insets';
 
 import { Button } from '@/components/Button';
-import { Rule } from '@/components/Rule';
 import { Text } from '@/components/Text';
 import { useContent } from '@/content/ContentProvider';
 import { crest } from '@/content/media';
@@ -19,15 +18,15 @@ export default function Connect() {
   const [mailNote, setMailNote] = useState<string | null>(null);
 
   const email = async () => {
-    const status = await composeEmail(contact.email, 'Inquiry — IAE Elite', '');
+    const status = await composeEmail(contact.email, 'Inquiry: IAE Elite', '');
     // Honest, inline feedback for a plain email — no fake success.
     setMailNote(
       status === 'sent'
         ? 'Email sent from Mail.'
         : status === 'saved'
-          ? 'Saved to your Mail drafts — not sent yet.'
+          ? 'Saved to your Mail drafts, not sent yet.'
           : status === 'handoff'
-            ? 'Opened in your mail app — send it from there.'
+            ? 'Opened in your mail app. Send it from there.'
             : status === 'failed'
               ? `Mail isn’t available. Write to ${contact.email} from any account, or call.`
               : null,
@@ -40,8 +39,7 @@ export default function Connect() {
         <Image source={crest} style={styles.crest} contentFit="contain" accessibilityElementsHidden />
         <Text variant="overline" tone="gold" style={{ marginTop: space.xl }}>Direct line</Text>
         <Text variant="display" style={{ marginTop: space.sm }}>One line.{'\n'}<Text variant="display" italic inline tone="gold">Handled quietly.</Text></Text>
-        <Rule width={72} style={{ marginVertical: space.xl }} />
-        <Text tone="muted">{contact.responseNote}</Text>
+        <Text tone="muted" style={{ marginTop: space.xl }}>{contact.responseNote}</Text>
       </View>
 
       <View style={[styles.pad, { gap: space.md, marginTop: space.xxl }]}>

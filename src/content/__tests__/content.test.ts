@@ -44,6 +44,10 @@ describe('bundled content (content/content.json)', () => {
     }
   });
 
+  it('contains no em or en dashes (client style request, 2026-10-26)', () => {
+    expect(JSON.stringify(bundled)).not.toMatch(/[–—]/);
+  });
+
   it('ships no prices (the client publishes none)', () => {
     expect(JSON.stringify(bundled)).not.toMatch(/\$\s?\d/);
   });

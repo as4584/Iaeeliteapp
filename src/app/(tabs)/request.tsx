@@ -134,8 +134,8 @@ function RequestFlow() {
 
           {step === 'when' && (
             <View style={styles.form}>
-              <StepIntro title="When and where?" body="An exact date helps. Approximate is fine — we confirm everything in writing." inset={false} />
-              <FormField label="Event date" value={draft.date} onChangeText={(date) => update({ date })} placeholder="e.g. March 14, or March 14–16" optional returnKeyType="next" />
+              <StepIntro title="When and where?" body="An exact date helps. Approximate is fine. We confirm everything in writing." inset={false} />
+              <FormField label="Event date" value={draft.date} onChangeText={(date) => update({ date })} placeholder="e.g. March 14, or March 14 to 16" optional returnKeyType="next" />
               <Chips options={WHEN_CHIPS} value={draft.date} onPick={(date) => update({ date })} />
               <FormField label="City" value={draft.city} onChangeText={(city) => update({ city })} placeholder="City or venue area" error={errors.city} autoCapitalize="words" returnKeyType="done" />
               <Chips options={CITY_CHIPS} value={draft.city} onPick={(city) => update({ city })} />
@@ -169,7 +169,7 @@ function RequestFlow() {
 
       <View style={[styles.dock, { paddingBottom: Math.max(insets.bottom, space.md) }]}>
         {stepIndex > 0 ? (
-          <Button label="Back" kind="secondary" arrow={false} onPress={() => goTo(stepIndex - 1)} style={{ flex: 0.6 }} />
+          <Button label="Back" kind="secondary" onPress={() => goTo(stepIndex - 1)} style={{ flex: 0.6 }} />
         ) : null}
         {step === 'review' ? (
           <Button label={sending ? 'Opening Mail…' : 'Send request'} onPress={send} disabled={sending} style={{ flex: 1 }} testID="send-request" accessibilityHint="Opens a pre-filled email for you to send" />
@@ -215,7 +215,7 @@ function ReviewBlock({ label, value, onEdit }: { label: string; value: string; o
     <View style={styles.review}>
       <View style={{ flex: 1, gap: 4 }}>
         <Text variant="overline" tone="gold">{label}</Text>
-        <Text>{value || '—'}</Text>
+        <Text>{value || 'Not provided'}</Text>
       </View>
       <Pressable onPress={onEdit} hitSlop={12} accessibilityRole="button" accessibilityLabel={`Edit ${label}`} style={{ minHeight: 44, justifyContent: 'center' }}>
         <Text variant="label" tone="gold">Edit</Text>

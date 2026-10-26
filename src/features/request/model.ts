@@ -75,9 +75,9 @@ export function buildRequestEmail(d: RequestDraft, content: Content) {
     .map((id) => content.services.find((s) => s.id === id)?.title)
     .filter((t): t is string => Boolean(t));
   const what = titles.length ? titles.join(', ') : 'Not specified';
-  const line = (label: string, value: string) => `${label}: ${value.trim() || '—'}`;
+  const line = (label: string, value: string) => `${label}: ${value.trim() || 'Not provided'}`;
 
-  const subject = `Elite Service Request — ${titles[0] ?? 'Consultation'}${titles.length > 1 ? ` +${titles.length - 1}` : ''}${d.city.trim() ? ` · ${d.city.trim()}` : ''}`;
+  const subject = `Elite Service Request: ${titles[0] ?? 'Consultation'}${titles.length > 1 ? ` +${titles.length - 1}` : ''}${d.city.trim() ? ` · ${d.city.trim()}` : ''}`;
   const body = [
     'ELITE SERVICE REQUEST',
     '',
@@ -91,9 +91,9 @@ export function buildRequestEmail(d: RequestDraft, content: Content) {
     line('Email', d.email),
     '',
     'Details:',
-    d.details.trim() || '—',
+    d.details.trim() || 'Not provided',
     '',
-    '— Sent from the IAE Elite iPhone app',
+    'Sent from the IAE Elite iPhone app',
   ].join('\n');
 
   return { to: content.contact.email, subject, body };
@@ -120,7 +120,7 @@ export function toOutcome(status: DeliveryStatus): Outcome {
         status,
         success: true,
         title: 'Request on its way.',
-        message: 'Mail has your request queued to send. We respond privately — usually within the hour during active hours.',
+        message: 'Mail has your request queued to send. We respond privately, usually within the hour during active hours.',
       };
     case 'saved':
       return {
@@ -134,7 +134,7 @@ export function toOutcome(status: DeliveryStatus): Outcome {
         status,
         success: false,
         title: 'Not sent.',
-        message: 'The email was closed without sending. Your details are still here — try again, or call the private line.',
+        message: 'The email was closed without sending. Your details are still here. Try again, or call the private line.',
       };
     case 'handoff':
       return {

@@ -6,7 +6,6 @@ import Animated, { FadeIn, FadeInDown, ZoomIn } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button } from '@/components/Button';
-import { Rule } from '@/components/Rule';
 import { Text } from '@/components/Text';
 import { useContent } from '@/content/ContentProvider';
 import { crest } from '@/content/media';
@@ -50,8 +49,7 @@ export default function RequestResult() {
         <Text variant="overline" tone={outcome.success ? 'gold' : 'muted'}>{outcome.success ? 'Request sent' : 'Request not yet sent'}</Text>
         <Text variant="display" style={{ textAlign: 'center', fontSize: 34, lineHeight: 40 }} accessibilityLiveRegion="polite">{outcome.title}</Text>
       </Animated.View>
-      <Rule draw={outcome.success} delay={500} width={72} style={{ alignSelf: 'center', marginVertical: space.xl }} />
-      <Animated.View entering={enter(320)}>
+      <Animated.View entering={enter(320)} style={{ marginTop: space.xl }}>
         <Text tone="muted" style={{ textAlign: 'center' }}>{outcome.message}</Text>
       </Animated.View>
 
@@ -78,9 +76,9 @@ export default function RequestResult() {
             {status !== 'failed' ? <Button label="Back to my request" onPress={() => router.back()} testID="back-to-request" /> : null}
             <Button label={`Call ${content.contact.phoneDisplay}`} kind={status === 'failed' ? 'primary' : 'secondary'} onPress={() => callNumber(content.contact.phoneE164)} />
             <Button
-              label={copied ? 'Copied — paste into any email' : 'Copy request text'}
+              label={copied ? 'Copied. Paste into any email' : 'Copy request text'}
               kind="quiet"
-              arrow={false}
+             
               onPress={async () => {
                 await copyText(`To: ${mail.to}\nSubject: ${mail.subject}\n\n${mail.body}`);
                 setCopied(true);

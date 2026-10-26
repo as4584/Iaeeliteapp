@@ -10,15 +10,16 @@ import { useTabScreenInsets } from '@/lib/insets';
 import { crest, resolveImage, resolveVideo } from '@/content/media';
 import type { Content } from '@/content/schema';
 import { useReducedMotion } from '@/lib/feel';
-import { color, gutter, space } from '@/theme/tokens';
+import { color, font, gutter, space } from '@/theme/tokens';
 
 import { Button } from './Button';
-import { Rule } from './Rule';
 import { Text } from './Text';
 
 /** Signature moment 1: muted film loop behind the crest and the line. */
 export function Hero({ hero, motto, onRequest }: { hero: Content['hero']; motto: string; onRequest: () => void }) {
-  const { height } = useWindowDimensions();
+  const { height, width } = useWindowDimensions();
+  // Larger headline; one step down on compact phones (iPhone SE) so it stays on four lines.
+  const headlineSize = width < 390 ? 42 : 48;
   const insets = useTabScreenInsets();
   const reduce = useReducedMotion();
   const reel = hero.film[0];
@@ -56,11 +57,11 @@ export function Hero({ hero, motto, onRequest }: { hero: Content['hero']; motto:
         />
       ) : null}
       <LinearGradient
-        colors={['rgba(10,10,11,0.55)', 'rgba(10,10,11,0.15)', 'rgba(10,10,11,0.85)', color.bg]}
-        locations={[0, 0.3, 0.68, 1]}
+        colors={['rgba(10,10,11,0.45)', 'rgba(10,10,11,0)', 'rgba(10,10,11,0.8)', color.bg]}
+        locations={[0, 0.22, 0.62, 1]}
         style={StyleSheet.absoluteFill}
       />
-      <View style={[styles.content, { paddingTop: insets.top + space.lg }]}>
+      <View style={[styles.content, { paddingTop: insets.top + space.xs }]}>
         <Animated.View entering={reduce ? undefined : FadeIn.duration(700)} style={styles.crestWrap}>
           <Image source={crest} style={height < 740 ? styles.crestSmall : styles.crest} contentFit="contain" accessibilityLabel="IAE Elite crest" />
         </Animated.View>
@@ -69,18 +70,19 @@ export function Hero({ hero, motto, onRequest }: { hero: Content['hero']; motto:
           <Text variant="overline" tone="gold">{hero.overline}</Text>
         </Animated.View>
         <Animated.View entering={enter(260)}>
-          <Text variant="display" style={{ marginTop: space.md }}>
+          <Text variant="display" style={{ marginTop: space.md, fontSize: headlineSize, lineHeight: headlineSize * 1.12 }}>
             {hero.headline}{' '}
-            <Text variant="display" italic inline tone="gold">{hero.accentWord}</Text>
+            <Text variant="display" italic inline tone="gold" style={{ fontSize: headlineSize, lineHeight: headlineSize * 1.12 }}>
+              {hero.accentWord}
+            </Text>
           </Text>
         </Animated.View>
-        <Rule draw delay={700} width={88} style={{ marginVertical: space.lg }} />
-        <Animated.View entering={enter(420)}>
-          <Text tone="muted">{hero.subhead}</Text>
+        <Animated.View entering={enter(420)} style={{ marginTop: space.lg }}>
+          <Text style={styles.subhead}>{hero.subhead}</Text>
         </Animated.View>
         <Animated.View entering={enter(560)} style={{ marginTop: space.xl, gap: space.md }}>
           <Button label={hero.primaryCta} onPress={onRequest} testID="hero-cta" accessibilityHint="Starts a private request" />
-          <Text variant="overline" tone="faint" style={{ textAlign: 'center' }}>{motto}</Text>
+          <Text variant="overline" tone="gold" style={{ textAlign: 'center' }}>{motto}</Text>
         </Animated.View>
       </View>
     </View>
@@ -90,7 +92,10 @@ export function Hero({ hero, motto, onRequest }: { hero: Content['hero']; motto:
 const styles = StyleSheet.create({
   root: { backgroundColor: color.bg, overflow: 'hidden' },
   content: { flex: 1, paddingHorizontal: gutter, paddingBottom: space.xxl },
-  crestWrap: { alignItems: 'center' },
-  crest: { width: 92, height: 92 },
-  crestSmall: { width: 64, height: 64 },
+  // Top-left, high in the frame; sized so the crest's lettering stays legible without covering the film.
+  crestWrap: { alignItems: 'flex-start' },
+  crest: { width: 112, height: 112 },
+  crestSmall: { width: 80, height: 80 },
+  // Two weight steps heavier (Manrope 400 -> 600) and full white for contrast over the film.
+  subhead: { fontFamily: font.bodySemi, fontSize: 17, lineHeight: 26, color: color.text },
 });

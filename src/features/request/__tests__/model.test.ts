@@ -62,7 +62,7 @@ describe('buildRequestEmail', () => {
   it('produces the exact brief the business receives', () => {
     const mail = buildRequestEmail(complete, content);
     expect(mail.to).toBe('innovationbusiness@icloud.com');
-    expect(mail.subject).toBe('Elite Service Request — Artist Transport +1 · New York');
+    expect(mail.subject).toBe('Elite Service Request: Artist Transport +1 · New York');
     expect(mail.body).toBe(
       [
         'ELITE SERVICE REQUEST',
@@ -79,20 +79,25 @@ describe('buildRequestEmail', () => {
         'Details:',
         'Two SUVs, private load-in.',
         '',
-        '— Sent from the IAE Elite iPhone app',
+        'Sent from the IAE Elite iPhone app',
       ].join('\n'),
     );
   });
 
-  it('marks blanks with an em dash rather than leaving empty labels', () => {
+  it('marks blanks as "Not provided" rather than leaving empty labels', () => {
     const mail = buildRequestEmail({ ...complete, date: '', organization: '', details: '' }, content);
-    expect(mail.body).toContain('Event date: —');
-    expect(mail.body).toContain('Organization / Management: —');
+    expect(mail.body).toContain('Event date: Not provided');
+    expect(mail.body).toContain('Organization / Management: Not provided');
   });
 
   it('ignores unknown service ids (e.g. after remote content removed one)', () => {
     const mail = buildRequestEmail({ ...complete, serviceIds: ['retired-service', 'itinerary'] }, content);
     expect(mail.body).toContain('What needs handling: Itinerary & Detail Management');
+  });
+
+  it('email subject and body contain no em or en dashes', () => {
+    const mail = buildRequestEmail({ ...emptyDraft, serviceIds: ['artist-transport', 'itinerary'], city: 'Newark' }, content);
+    expect(mail.subject + mail.body).not.toMatch(/[–—]/);
   });
 
   it('mailto fallback encodes subject and body', () => {
