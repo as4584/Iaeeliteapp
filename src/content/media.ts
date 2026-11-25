@@ -36,12 +36,20 @@ const images: Record<string, Img> = {
   'film-arrival-poster': require('@/assets/media/film-arrival.webp'),
   'film-room-poster': require('@/assets/media/film-room.webp'),
   'film-standard-poster': require('@/assets/media/film-standard.webp'),
+  // v16 handoff (Damian, 2026-11-25)
+  'bc-hero': require('@/assets/media/bc-hero.jpg'),
+  'bc-motorcade': require('@/assets/media/bc-motorcade.jpg'),
+  'bc-fleet': require('@/assets/media/bc-fleet.jpg'),
+  'team-personnel': require('@/assets/media/team-personnel.jpg'),
+  'team-detail': require('@/assets/media/team-detail.jpg'),
 };
 
 const videos: Record<string, number> = {
   'film-arrival': require('@/assets/media/film-arrival.mp4'),
   'film-room': require('@/assets/media/film-room.mp4'),
   'film-standard': require('@/assets/media/film-standard.mp4'),
+  'film-home': require('@/assets/media/film-home.mp4'),
+  'film-blackcar': require('@/assets/media/film-blackcar.mp4'),
 };
 
 const FALLBACK = images.crest;
