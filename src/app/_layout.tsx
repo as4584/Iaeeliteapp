@@ -12,10 +12,12 @@ import { DarkTheme, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
+import { Platform } from 'react-native';
 
 import { ContentProvider } from '@/content/ContentProvider';
 import { RequestProvider } from '@/features/request/RequestProvider';
 import { color } from '@/theme/tokens';
+import V22Shell from '@/v22/V22Shell';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -25,6 +27,21 @@ const theme = {
 };
 
 export default function RootLayout() {
+  // iOS/Android ship Damian's v22 design as-is; the web build keeps the native-screen version.
+  if (Platform.OS !== 'web') return <NativeV22Root />;
+  return <ExpoScreensRoot />;
+}
+
+function NativeV22Root() {
+  return (
+    <>
+      <StatusBar style="light" />
+      <V22Shell onReady={() => SplashScreen.hideAsync()} />
+    </>
+  );
+}
+
+function ExpoScreensRoot() {
   const [loaded, error] = useFonts({
     BodoniModa_500Medium,
     BodoniModa_500Medium_Italic,
