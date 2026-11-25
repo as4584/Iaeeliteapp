@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "updatedAt": "2026-10-25",
+  "updatedAt": "2026-11-25",
   "brand": {
     "name": "Innovation Artist Escort",
     "shortName": "IAE Elite",
@@ -30,6 +30,8 @@
   },
   "socials": [
     { "id": "instagram", "label": "Instagram", "handle": "@getyourbusinessstartednow", "url": "https://instagram.com/GETYOURBUSINESSSTARTEDNOW" },
+    { "id": "facebook", "label": "Facebook", "handle": "IAE Elite on Facebook", "url": "https://www.facebook.com/share/1Ca3KKBmwC/" },
+    { "id": "whatsapp", "label": "WhatsApp", "handle": "+1 (862) 332-5004 · Video & Voice", "url": "https://wa.me/18623325004" },
     { "id": "website", "label": "Website", "handle": "iaeelite.com", "url": "https://iaeelite.com/" },
     { "id": "parent", "label": "Innovation Business Development Solutions", "handle": "innovationdevelopmentsolutions.com", "url": "https://innovationdevelopmentsolutions.com" }
   ],

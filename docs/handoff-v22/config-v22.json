@@ -1,0 +1,22 @@
+{
+  "_help": "Edit these values, save, and redeploy this folder. The app picks up changes next time it opens. Keep the same field names. Phone dial format: + country code + digits, no spaces. WhatsApp: country code + number, digits only. Links must start with https://",
+  "phoneDial": "+15513014430",
+  "phoneDisplay": "+1 (551) 301-4430",
+  "email": "innovationbusiness@icloud.com",
+  "facetime": "innovationbusiness@icloud.com",
+  "whatsapp": "18623325004",
+  "instagram": "https://instagram.com/GETYOURBUSINESSSTARTEDNOW",
+  "facebook": "https://www.facebook.com/share/1Ca3KKBmwC/",
+  "websites": [
+    {
+      "name": "IAE ELITE SERVICES",
+      "url": "https://iaeelite.com",
+      "label": "iaeelite.com"
+    },
+    {
+      "name": "IBDS BUSINESS DEVELOPMENT SOLUTIONS",
+      "url": "https://innovationdevelopmentsolutions.com",
+      "label": "innovationdevelopmentsolutions.com"
+    }
+  ]
+}
