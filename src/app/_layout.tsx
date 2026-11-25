@@ -17,7 +17,8 @@ import { Platform } from 'react-native';
 import { ContentProvider } from '@/content/ContentProvider';
 import { RequestProvider } from '@/features/request/RequestProvider';
 import { color } from '@/theme/tokens';
-import V22Shell from '@/v22/V22Shell';
+import V22App from '@/v22native/V22App';
+import { v22Fonts } from '@/v22native/fonts';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -27,16 +28,22 @@ const theme = {
 };
 
 export default function RootLayout() {
-  // iOS/Android ship Damian's v22 design as-is; the web build keeps the native-screen version.
-  if (Platform.OS !== 'web') return <NativeV22Root />;
+  // iOS/Android run Damian's v22 design, rebuilt natively (src/v22native); the web build keeps the earlier screens.
+  // EXPO_PUBLIC_V22_PREVIEW=1 renders the v22 screens in the web preview too, for side-by-side QA.
+  if (Platform.OS !== 'web' || process.env.EXPO_PUBLIC_V22_PREVIEW === '1') return <NativeV22Root />;
   return <ExpoScreensRoot />;
 }
 
 function NativeV22Root() {
+  const [loaded, error] = useFonts(v22Fonts);
+  useEffect(() => {
+    if (loaded || error) SplashScreen.hideAsync();
+  }, [loaded, error]);
+  if (!loaded && !error) return null;
   return (
     <>
       <StatusBar style="light" />
-      <V22Shell onReady={() => SplashScreen.hideAsync()} />
+      <V22App />
     </>
   );
 }

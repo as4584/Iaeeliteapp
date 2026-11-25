@@ -60,7 +60,8 @@
       "expo-mail-composer",
       "expo-video",
       "expo-font",
-      "expo-asset"
+      "expo-asset",
+      "@react-native-community/datetimepicker"
     ],
     "experiments": {
       "typedRoutes": true,

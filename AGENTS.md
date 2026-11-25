@@ -47,7 +47,7 @@ Docs: https://docs.expo.dev/eas/index.md
 - Screens never call `fetch`, `Linking`, or `MailComposer` directly: use `src/content/repository.ts` and `src/lib/contact.ts`.
 - Request success copy is shown **only** for Mail status `sent` (`toOutcome`). Keep it that way.
 - Keep the "IAE is not a security firm" scope notes on protective services.
-- Design is frozen per `docs/DESIGN.md`; change it only for a written defect.
+- **iOS/Android ship Damian's v22 design, rebuilt natively in `src/v22native/`** (Alex, 2026-11-25). His handoff `www/index.html` is the visual spec: match it 1:1 (sizes are CSS px == pt). Contact details/copy for it live in `src/v22native/content.ts`. The older `docs/DESIGN.md` screens now only serve the web build. QA side-by-side: `EXPO_PUBLIC_V22_PREVIEW=1 npx expo start --web --port 8099`, serve his `www/` on 8098, screenshot both at 393x852.
 - Done = `npm run check` green + screenshots re-captured for touched screens + `docs/QA.md` updated.
 - Branches only; `master` holds tagged baselines. Never submit to the App Store or run `eas build/submit/update` without Alex's explicit approval.
 - Jest: use `test/reanimated-stub.js` (Reanimated 4.7's mock throws under jest-expo); `await` RNTL `render`/`fireEvent`.

@@ -78,3 +78,19 @@ headers, request dock double-offset for tab bar, truncated step label on SE.
 Fixed in pass 2: double-tap could open Mail twice; completed request left the Request tab on an
 empty Review; "Request this service" could land mid-flow; 29 unused font files bundled (11 → 7.5 MB
 assets); dark status bar text on black splash; unneeded Android storage permissions.
+
+## 2026-11-25 — v22 native rebuild (build 6)
+
+iOS/Android now render Damian's v22 design as native screens (`src/v22native/`), replacing the
+build-5 web-view shell. Verified:
+
+| Check | Result |
+|---|---|
+| `npm run check` | typecheck + lint clean, 75/75 tests (10 new: tabs, book-a-service preselect, validation, success only on Mail `sent`, contact destinations) |
+| iOS bundle (`expo export -p ios`) | compiles, all v22 media bundled |
+| Side-by-side vs his `www/index.html` at 393x852 (web preview) | all 5 tabs + lower Request/Connect match within a few pt; legal + service picker checked |
+| Gold gradient lettering, films, mail sheet, FaceTime/WhatsApp hand-off | native-only — **verify on device** in TestFlight build 6 |
+
+Deliberate differences from his page: success sheet only after Mail reports *sent* (his shows it on a
+timer); legal "Third parties" drops the Google Fonts / remote-settings sentences (native app bundles
+both); event date can't be in the past; service list drops his duplicate "Black Car Service" option.

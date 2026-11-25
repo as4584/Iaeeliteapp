@@ -43,7 +43,7 @@ export async function callNumber(e164: string): Promise<boolean> {
 }
 
 export async function openExternal(url: string): Promise<boolean> {
-  if (!/^(https:|mailto:|tel:)/.test(url)) return false;
+  if (!/^(https:|mailto:|tel:|facetime:)/.test(url)) return false;
   try {
     await Linking.openURL(url);
     return true;
