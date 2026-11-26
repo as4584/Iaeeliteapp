@@ -1,0 +1,25 @@
+appId: com.innovationartistescort.iaeelite
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible:
+      id: tab-home
+    timeout: 20000
+- takeScreenshot: 01-home
+- tapOn:
+    id: tab-services
+- takeScreenshot: 02-services
+- tapOn:
+    id: tab-blackcar
+- takeScreenshot: 03-blackcar
+- tapOn:
+    id: tab-request
+- takeScreenshot: 04-request
+- tapOn:
+    id: tab-connect
+- takeScreenshot: 05-connect
+- tapOn:
+    id: tab-home
+- assertVisible:
+    id: tab-home

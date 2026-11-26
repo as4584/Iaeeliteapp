@@ -1,0 +1,33 @@
+name: ios-sim
+# Release build on an iOS simulator: launch must survive, every tab must render.
+on:
+  push:
+    branches: ['feat/**']
+  workflow_dispatch:
+jobs:
+  launch:
+    runs-on: macos-26
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx expo prebuild -p ios --clean --no-install
+      - run: cd ios && pod install
+      - name: Build Release for simulator
+        run: |
+          WS=$(ls -d ios/*.xcworkspace | head -1); SCHEME=$(basename "$WS" .xcworkspace)
+          set -o pipefail
+          xcodebuild -workspace "$WS" -scheme "$SCHEME" -configuration Release -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO COMPILER_INDEX_STORE_ENABLE=NO build | tail -60
+      - run: curl -fsSL https://get.maestro.mobile.dev | bash
+      - run: bash scripts/ios-sim-smoke.sh
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sim-out
+          path: sim-out
