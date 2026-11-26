@@ -6,7 +6,7 @@ export const media = {
   tileMotorcade: require('../../assets/v22/img-06-2345499b.jpg'),
   tilePersonnel: require('../../assets/v22/img-07-eed91c22.jpg'),
   tileEscort: require('../../assets/v22/img-08-f1a9a7ff.jpg'),
-  filmHome: require('../../assets/v22/video-01-df77a637.mp4'),
+  filmHome: require('../../assets/v24/home-film.mp4'), // V24: the original V21 home video
   filmServices: require('../../assets/v22/video-04-fce617d4.mp4'),
   filmBlackCar: require('../../assets/v22/video-09-1969460c.mp4'),
   filmRequest: require('../../assets/v22/video-10-d07cedbb.mp4'),

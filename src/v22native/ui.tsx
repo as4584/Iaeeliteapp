@@ -36,15 +36,15 @@ const webGold = (g: Grad) =>
 const MaskedView = RNMaskedView as unknown as ComponentType<{ maskElement: ReactElement; children: ReactNode; style?: StyleProp<ViewStyle> }>;
 
 /** Text filled with a gold gradient (his `background:var(--gd-txt); background-clip:text`). */
-export function GoldText({ style, children, grad = GD_TXT, numberOfLines }: { style: StyleProp<TextStyle>; children: ReactNode; grad?: Grad; numberOfLines?: number }) {
+export function GoldText({ style, children, grad = GD_TXT, numberOfLines, testID }: { style: StyleProp<TextStyle>; children: ReactNode; grad?: Grad; numberOfLines?: number; testID?: string }) {
   if (Platform.OS === 'web') {
     // Web preview only: masked-view has no web renderer, so use CSS background-clip text.
-    return <Text numberOfLines={numberOfLines} style={[style, webGold(grad)]}>{children}</Text>;
+    return <Text testID={testID} numberOfLines={numberOfLines} style={[style, webGold(grad)]}>{children}</Text>;
   }
   return (
     <MaskedView maskElement={<Text style={[style, { color: '#000' }]} numberOfLines={numberOfLines}>{children}</Text>}>
       <LinearGradient colors={grad.colors} locations={grad.locations} start={grad.start} end={grad.end}>
-        <Text style={[style, { opacity: 0 }]} numberOfLines={numberOfLines}>{children}</Text>
+        <Text testID={testID} style={[style, { opacity: 0 }]} numberOfLines={numberOfLines}>{children}</Text>
       </LinearGradient>
     </MaskedView>
   );

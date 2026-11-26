@@ -65,9 +65,9 @@ export function Home({ go, statsPlayed, onStatsPlayed }: Props) {
         pointerEvents="none"
       />
 
-      <View style={[styles.floatBar, { paddingTop: 26 + insets.top }]}>
+      <View testID="home-float-bar" style={[styles.floatBar, { paddingTop: 26 + insets.top }]}>
         <Crest size={88} ring={2.5} glow="0 0 32px rgba(201,168,76,0.8), 0 0 80px rgba(201,168,76,0.32), 0 0 120px rgba(201,168,76,0.12)" />
-        <GoldText grad={GD_BRAND} style={[styles.tag, { fontSize: clampVw(w, 9, 2.8, 11.5) }]}>{'INNOVATION ARTIST ESCORT\nELITE SERVICES'}</GoldText>
+        <GoldText testID="home-tag" grad={GD_BRAND} style={[styles.tag, { fontSize: clampVw(w, 9, 2.8, 11.5) }]}>{'INNOVATION ARTIST ESCORT\nELITE SERVICES'}</GoldText>
       </View>
 
       <View style={styles.content}>
@@ -109,8 +109,8 @@ export function Home({ go, statsPlayed, onStatsPlayed }: Props) {
 
 const styles = StyleSheet.create({
   fill: { flex: 1, backgroundColor: c.bg },
-  floatBar: { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12, paddingHorizontal: 22 },
-  tag: { fontFamily: sans(900), letterSpacing: 1.8, lineHeight: 24, textAlign: 'right' },
+  floatBar: { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', gap: 14, paddingHorizontal: 22 }, // V24: lettering beside the logo
+  tag: { fontFamily: sans(900), letterSpacing: 1.8, lineHeight: 24, textAlign: 'left' },
   content: { position: 'absolute', left: 0, right: 0, bottom: 0, zIndex: 5, paddingHorizontal: 22, paddingBottom: 22 },
   hl: { fontFamily: serif(700), color: c.off, letterSpacing: -0.5 }, // his 10px bottom margin collapses into the rule's 20px
   rule: { height: 1.5, marginTop: 20, marginBottom: 18, justifyContent: 'center', alignItems: 'center', overflow: 'visible' },
